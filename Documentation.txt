@@ -1,0 +1,8 @@
+chemtrack app is the main application :
+
+The models define all of the data that is stored in the DB
+
+
+The current template used for new records is saved under "record_template/template.json"
+    - Modify it when we want to change the template of newly created records
+    - Whenever we modify it, go to /check_template/ to see if the template is valid or not
