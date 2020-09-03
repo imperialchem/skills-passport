@@ -7,16 +7,16 @@ class Assignment(models.Model):
 
 
 class Category_template(models.Model):
-    name = models.CharField(max_length=200)
-    description = models.TextField()
+    name = models.CharField(max_length=200, default="")
+    description = models.TextField(default="")
 
     def __str__(self):
         return f"{self.pk} : {self.name}"
 
 
 class Descriptor_template(models.Model):
-    name = models.CharField(max_length=200)
-    description = models.TextField()
+    name = models.CharField(max_length=200, default="")
+    description = models.TextField(default="")
 
     def __str__(self):
         return f"{self.pk} : {self.name}"
@@ -25,8 +25,11 @@ class Descriptor_template(models.Model):
 class Record(models.Model):
     date_creation = models.DateTimeField(auto_now_add=True)
     student_cid = models.CharField(max_length=15)
+    date = models.DateTimeField()
     state = models.IntegerField(default=0)
     levels = models.CharField(max_length=200)
+    name = models.CharField(max_length=100, default="")
+    description = models.TextField(default="")
 
 
 class Record_category(models.Model):
@@ -41,6 +44,6 @@ class Record_descriptor(models.Model):
     draft_level = models.IntegerField(default=0)
     feedback_level = models.IntegerField(default=0)
     final_level = models.IntegerField(default=0)
-    draft_statement = models.TextField()
-    feedback_statement = models.TextField()
-    final_statement = models.TextField()
+    draft_statement = models.TextField(default="")
+    feedback_statement = models.TextField(default="")
+    final_statement = models.TextField(default="")

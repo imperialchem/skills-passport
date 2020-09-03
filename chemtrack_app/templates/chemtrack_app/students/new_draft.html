@@ -1,0 +1,17 @@
+{% extends "../../base.html" %}
+
+{% block content %}
+
+    <h2>New Draft</h2>
+
+    <form method="POST" action="{% url 'new_draft' %}">
+
+        Title : <input type="text" name="name" /> <br>
+        Date : <input type="date" name="date" /> <br>
+
+        Description : <input type="multiline" name="description"/>
+        <br><br>
+        <input type="submit" />
+    </form>
+
+{% endblock %}

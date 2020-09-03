@@ -1,0 +1,63 @@
+{% load static %}
+{% load groups %}
+<html>
+    <head>
+        <title>{% block title %}Chemtrack{% endblock %}</title>
+        <link rel="stylesheet" href="{% static 'css/base.css' %}">
+        <script src="{% static 'js/jquery.js' %}"></script>
+        <script src="{% static 'js/base.js' %}"></script>
+        {% block styles %}{% endblock %}
+    </head>
+    <body>
+        <header>
+            <div id="menu_div">
+                <span onclick="openNav()">☰ Menu</span>
+            </div>
+            <div id="log_in_div">
+                {% if user.is_authenticated %}
+                    {{user.username}} - <a href="{% url 'logout' %}">Log Out</a>
+                {% else %}
+                    <a href="{% url 'login' %}">Log In</a>
+                {% endif %}
+            </div>
+            <h1><a href="{% url 'index' %}">Chemtrack</a></h1>
+        </header>
+
+        <div id="mySidenav" class="sidenav">
+          <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+          <a href="{% url 'index' %}">Home</a>
+          <a href="{% url 'student_drafts' %}">Drafts</a>
+          <a href="#">Current Records</a>
+          <a href="#">Finished Records</a>
+          {% if request.user.is_superuser %}
+            <a href="{% url 'template_check' %}">Check_template</a>
+          {% endif %}
+        </div>
+
+        {% comment%}
+             Overlay to help close the sidebar
+        {% endcomment%}
+        <div id="overlay" onclick="closeNav()" ></div>
+
+        <div id="content">
+            {% block content %}
+
+            <p>
+                {% if user.is_authenticated %}
+
+                    Logged in as {{user.username}},
+                    {% if request.user|has_group:"student" %}
+                        you are a student.
+                    {% elif  request.user|has_group:"teacher"%}
+                        you are a teacher.
+                    {% endif %}
+                {% else %}
+                    Chemtrack website is a website for the chemistry department. <br>
+                    Please log in <a href="{% url 'login' %}">here</a>
+                {% endif %}
+            </p>
+
+            {% endblock %}
+        </div>
+    </body>
+</html>

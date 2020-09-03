@@ -1,11 +1,20 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required, user_passes_test
+from . import models
+from django.template import loader
 
 from .controllers import check_template as controller_check_template
 
-def index(request):
-    return HttpResponse("Hello, world. You're at the polls index.")
 
+
+def index(request):
+    template = 'base.html'
+    context = {}
+    return render(request, template, context)
+
+
+login_required()
 def detail(request, question_id):
     return HttpResponse("You're looking at question %s." % question_id)
 
@@ -16,6 +25,7 @@ def results(request, question_id):
 def vote(request, question_id):
     return HttpResponse("You're voting on question %s." % question_id)
 
+login_required()
 def check_template(request):
 
     template_ok, err = controller_check_template.check_template()
