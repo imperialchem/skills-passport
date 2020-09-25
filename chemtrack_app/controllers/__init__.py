@@ -3,6 +3,9 @@
 from .groups import is_student
 from .groups import is_teacher
 
+# For record management
+from .record import create_record
 
-
-from .check_template import check_template
+# For admin check template
+from .templates import check_template
+from .templates import get_template
