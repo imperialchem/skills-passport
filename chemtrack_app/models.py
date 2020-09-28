@@ -48,14 +48,14 @@ class Record(models.Model):
 
 
 class Record_category(models.Model):
-    template_id = models.ForeignKey(Category_template, on_delete=models.CASCADE)
-    record_id = models.ForeignKey(Record, on_delete=models.CASCADE)
+    template = models.ForeignKey(Category_template, on_delete=models.CASCADE)
+    record = models.ForeignKey(Record, on_delete=models.CASCADE)
     level = models.IntegerField(default=0)
 
 
 class Record_descriptor(models.Model):
-    template_id = models.ForeignKey(Descriptor_template, on_delete=models.CASCADE)
-    category_id = models.ForeignKey(Record_category, on_delete=models.CASCADE)
+    template = models.ForeignKey(Descriptor_template, on_delete=models.CASCADE)
+    category = models.ForeignKey(Record_category, on_delete=models.CASCADE)
     draft_level = models.IntegerField(default=0)
     feedback_level = models.IntegerField(default=0)
     final_level = models.IntegerField(default=0)
