@@ -130,3 +130,24 @@ div#content {
     cursor:pointer;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
+
+.in-button {
+    padding-left:10px;
+    padding-top: 5px;
+    padding-bottom:5px;
+    width:95%;
+    font-size:20px;
+    color:black;
+    text-decoration: none;
+    border: 1px rgb(50,80,1) solid;
+}
+
+.in-button:hover{
+    cursor:pointer;
+    background-color:rgb(240,240,240);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.in-button .right_info {
+    float:right;
+}

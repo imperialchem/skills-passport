@@ -31,3 +31,24 @@ def check_template():
 
 
     return result, err
+
+def get_template():
+    with open(settings.TEMPLATE_RECORD, "r") as file:
+
+        data = json.load(file)
+        result = []
+
+        for category in data["categories"]:
+
+            # if the category is not in the database
+            category = Category_template.objects.filter(pk=category["id"])
+
+            descriptors = []
+            for desc_id in category["descriptors"]:
+                desc = Descriptor_template.objects.filter(pk=desc_id)
+                descriptors.append(desc)
+
+            result.append({"category":category, "descriptors":descriptors})
+
+
+    return result
