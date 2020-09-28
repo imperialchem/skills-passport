@@ -6,10 +6,10 @@
 
     <form method="POST" action="{% url 'new_draft' %}">
 
-        Title : <input type="text" name="name" /> <br>
-        Date : <input type="date" name="date" /> <br>
-
-        Description : <input type="multiline" name="description"/>
+        {% csrf_token %}
+        Name: <input type="text" name="name" maxlength="100" required/> <br>
+        Date: <input type="date" name="date" required/> <br><br>
+        Description:<br> <textarea name="description" rows="5" cols="20"></textarea>
         <br><br>
         <input type="submit" />
     </form>

@@ -8,13 +8,13 @@ from django.conf import settings
 #
 
 
-def create_record(student_cid):
+def create_record(student_cid, name, description, date):
     """
 
     :param student_cid: string : CID of the student
     :return: id of new record
     """
-    new_record = Record(date_creation=timezone.now(), student_cid=student_cid)
+    new_record = Record(date_creation=timezone.now(), student_cid=student_cid, name=name, description=description, date=date)
     new_record.save()
 
 
@@ -24,13 +24,13 @@ def create_record(student_cid):
 
         for category in template["categories"]:
 
-            new_category = Record_category(template_id=category["id"], record_id=new_record.pk)
+            new_category = Record_category(template_id=category["id"], record_id=new_record)
             new_category.save()
 
             for descriptor_id  in category["descriptors"]:
 
-                new_descriptor= Record_descriptor(template_id=descriptor_id, category_id=new_category.pk)
+                new_descriptor= Record_descriptor(template_id=descriptor_id, category_id=new_category)
                 new_descriptor.save()
 
-    return True
+    return new_record.pk
 
