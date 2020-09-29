@@ -24,7 +24,7 @@ def create_draft(request):
         print(form.errors)
         if form.is_valid():
             new_id = controllers.create_record(request.user.profile.cid, form.cleaned_data["name"], form.cleaned_data["description"], form.cleaned_data["date"])
-            return redirect(f'view_draft/{new_id}')
+            return redirect(f'view_record/{new_id}')
 
         else:
             return redirect('new_draft')

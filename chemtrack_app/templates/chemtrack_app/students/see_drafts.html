@@ -8,7 +8,7 @@
     <h2>Drafts</h2>
 
     {% for record in records %}
-        <a href="" class="no_style_link">
+        <a href="{% url 'view_record' record_id=record.pk%}" class="no_style_link">
             <div class="in-button">
                 <div class="right_info">
                     <div class="creation_record">Created the: {{record.date_creation}}</div>
