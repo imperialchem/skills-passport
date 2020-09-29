@@ -50,7 +50,9 @@ class Record(models.Model):
 class Record_category(models.Model):
     template = models.ForeignKey(Category_template, on_delete=models.CASCADE)
     record = models.ForeignKey(Record, on_delete=models.CASCADE)
-    level = models.IntegerField(default=0)
+    draft_level = models.IntegerField(default=0)
+    feedback_level = models.IntegerField(default=0)
+    final_level = models.IntegerField(default=0)
 
 
 class Record_descriptor(models.Model):
