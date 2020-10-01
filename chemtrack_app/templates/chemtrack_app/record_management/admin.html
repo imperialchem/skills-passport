@@ -1,0 +1,79 @@
+{% extends "../../base.html" %}
+{% load record %}
+{% load groups %}
+
+{% block content %}
+    <center><h1 id="draft_name">{{record.name}}</h1></center>
+    <p id="draft_description" >
+        Description: {{record.description}} <br>
+        Date: {{record.date}} <br>
+        Created the: {{record.date_creation}} <br>
+        State:
+            {% if record.state is 0 %}
+                Draft Stage
+            {% elif record.state is 1 %}
+                Waiting for feedback by teachers
+            {% elif record.state is 2 %}
+                Waiting for final submission by student
+            {% elif record.state is 3%}
+                Waiting for final confirmation by teachers
+            {% else %}
+                Final record
+            {% endif %}<br>
+        Record ID: {{record.pk}}
+
+    </p>
+
+    <a href="{% url 'view_record' record.pk%}" >Go back</a><br><br>
+
+    {% if request.user|has_group:"student" %}
+        {% if record.state is 0 %}
+            Delete the record :
+            <form href="{% url 'view_record' record.pk %}" method="POST">
+
+                {% csrf_token %}
+                <input type="submit" value="submit" name="delete_record" onclick="return confirm('Are you sure you want to delete this record')"/>
+            </form>
+        {% endif %}
+    {% elif  request.user|has_group:"teacher"%}
+        <form href="{% url 'view_record' record.pk %}" method="POST">
+            Set the record to the draft phase :
+
+                {% csrf_token %}
+                <input name="new_state" type="hidden" value="0" />
+                <input type="submit" value="submit" name="modify_state" onclick="return confirm('Are you sure you want to set this record to the draft phase ?')"/>
+        </form><br>
+        <form href="{% url 'view_record' record.pk %}" method="POST">
+            Set the record to the feedback phase :
+
+                {% csrf_token %}
+                <input name="new_state" type="hidden" value="1" />
+                <input type="submit" value="submit" name="modify_state" onclick="return confirm('Are you sure you want to set this record to the feedback phase ?')"/>
+        </form><br>
+
+        <form href="{% url 'view_record' record.pk %}" method="POST">
+            Set the record to the final statement phase :
+
+                {% csrf_token %}
+                <input name="new_state" type="hidden" value="2" />
+                <input type="submit" value="submit" name="modify_state" onclick="return confirm('Are you sure you want to set this record to the final statement phase ?')"/>
+        </form><br>
+
+        <form href="{% url 'view_record' record.pk %}" method="POST">
+            Set the record to the waiting confirmation phase :
+
+                {% csrf_token %}
+                <input name="new_state" type="hidden" value="3" />
+                <input type="submit" value="submit" name="modify_state" onclick="return confirm('Are you sure you want to set this record to the waiting confirmation phase ?')"/>
+        </form><br>
+
+        <form href="{% url 'view_record' record.pk %}" method="POST">
+            Set the record to the final record state :
+
+                {% csrf_token %}
+                <input name="new_state" type="hidden" value="4" />
+                <input type="submit" value="submit" name="modify_state" onclick="return confirm('Are you sure you want to set this record to the final record state ?')"/>
+        </form><br>
+    {% endif %}
+
+{% endblock %}

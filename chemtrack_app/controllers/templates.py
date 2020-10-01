@@ -38,14 +38,14 @@ def get_template():
         data = json.load(file)
         result = []
 
-        for category in data["categories"]:
+        for category_id in data["categories"]:
 
             # if the category is not in the database
-            category = Category_template.objects.filter(pk=category["id"])
+            category = Category_template.objects.filter(pk=category_id["id"])[0]
 
             descriptors = []
-            for desc_id in category["descriptors"]:
-                desc = Descriptor_template.objects.filter(pk=desc_id)
+            for desc_id in category_id["descriptors"]:
+                desc = Descriptor_template.objects.filter(pk=desc_id)[0]
                 descriptors.append(desc)
 
             result.append({"category":category, "descriptors":descriptors})

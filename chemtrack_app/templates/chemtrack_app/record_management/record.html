@@ -1,0 +1,224 @@
+{% extends "../../base.html" %}
+{% load record %}
+{% load groups %}
+
+{% block content %}
+    <center><h1 id="draft_name">{{record.name}}</h1></center>
+    <p id="draft_description" >
+        Description: {{record.description}} <br>
+        Date: {{record.date}} <br>
+        Created the: {{record.date_creation}} <br>
+        State:
+            {% if record.state is 0 %}
+                Draft Stage
+            {% elif record.state is 1 %}
+                Waiting for feedback by teachers
+            {% elif record.state is 2 %}
+                Waiting for final submission by student
+            {% elif record.state is 3%}
+                Waiting for final confirmation by teachers
+            {% else %}
+                Final record
+            {% endif %}
+    </p>
+
+    <div id="side_menu">
+        {% for category in record.record_category_set.all%}
+            <div class="cat_menu_element
+                {# Selects by default the first category #}
+                {% if forloop.counter0 == 0%}
+                    selected
+                {% endif %}"
+                    id="category_menu_{{forloop.counter0}}">
+                {{category.template.name}}
+            </div>
+        {% endfor %}
+
+        <div class="cat_menu_element">
+            <center><a href="{% url 'view_record' record.pk %}?page=admin" class="no_style_link">Admin</a></center>
+        </div>
+
+        {% can_submit record user as can_submit_flag %}
+
+        {% if can_submit_flag %}
+            <div class="cat_menu_element">
+                <center>
+                    <form href="{% url 'view_record' record.pk %}" method="POST">
+
+                        {% csrf_token %}
+                        <input type="submit" value="submit" name="submit_record" onclick="return confirm('Please confirm that you are submitting')"/>
+                    </form>
+                </center>
+            </div>
+        {% endif %}
+
+
+
+
+    </div>
+    <div id="record_area">
+
+
+        {% for category in record.record_category_set.all %}
+            <div class="category_container {% if forloop.counter0 == 0 %} selected {%endif%}"
+                 id="category_container_{{forloop.counter0}}">
+
+                <script>
+
+                $("#category_menu_{{forloop.counter0}}").click(function () {
+                    $(".cat_menu_element").removeClass("selected");
+                    $(".category_container").removeClass("selected");
+                    $("#category_menu_{{forloop.counter0}}").addClass("selected");
+                    $("#category_container_{{forloop.counter0}}").addClass("selected");
+                });
+                </script>
+
+
+
+                <div id="category_{{forloop.counter0}}">
+                    <div class="tooltip"><h3 class="category_title">{{category.template.name}}</h3>
+                      <span class="tooltiptext">{{category.template.description}}</span>
+                    </div>
+                </div>
+                {% for descriptor in category.record_descriptor_set.all %}
+
+                <div class="tooltip">
+                    <h4>{{descriptor.template.name}}</h4>
+                      <span class="tooltiptext">{{descriptor.template.description}}</span>
+                </div>
+
+                    <div class="descriptor_state_choice">
+                        <div id="choice_{{forloop.parentloop.counter0}}_{{forloop.counter0}}_0"
+                             class="descriptor_display_choice {% pre_select record 0%}">Draft</div>
+                        <div id="choice_{{forloop.parentloop.counter0}}_{{forloop.counter0}}_1"
+                             class="descriptor_display_choice {% pre_select record 1%}">Feedback</div>
+                        <div id="choice_{{forloop.parentloop.counter0}}_{{forloop.counter0}}_2"
+                             class="descriptor_display_choice {% pre_select record 2%}">Final</div>
+                    </div>
+
+                    {# Looping through the 3 states of the draft #}
+
+                    {% with 'Draft Feedback Final' as list %}
+                        {% for i in list.split %}
+
+                            {# Scripts for toggling the descriptors stages #}
+                            <script>
+
+                                $("#choice_{{forloop.parentloop.parentloop.counter0}}_{{forloop.parentloop.counter0}}_{{forloop.counter0}}").click(function () {
+                                    $("#choice_{{forloop.parentloop.parentloop.counter0}}_{{forloop.parentloop.counter0}}_{{forloop.counter0}}").toggleClass("selected");
+                                    $("#descriptor_container_{{forloop.parentloop.parentloop.counter0}}_{{forloop.parentloop.counter0}}_{{forloop.counter0}}").toggleClass("selected");
+                                });
+                            </script>
+
+                            {# Compute if the user can modify this part of the descriptor #}
+                            {% can_modify record user forloop.counter0 as can_modify_flag %}
+
+                            <div
+                                    id="descriptor_container_{{forloop.parentloop.parentloop.counter0}}_{{forloop.parentloop.counter0}}_{{forloop.counter0}}"
+                                    class="descriptor_container {% pre_select record forloop.counter0%}"
+                            >
+
+                                <h6>{{i}}</h6>
+
+                                {% list_levels_generate forloop.counter0 as list_levels %}
+                                    <div
+                                            id="level_containers_{{forloop.parentloop.parentloop.counter0}}_{{forloop.counter0}}"
+                                            class="level_container"
+                                    >
+                                        {% for j in list_levels %}
+
+                                            <div
+                                                    id="level_{{forloop.parentloop.parentloop.parentloop.counter0}}_{{forloop.parentloop.parentloop.counter0}}_{{forloop.parentloop.counter0}}_{{forloop.counter}}"
+                                                    class="level_button {%is_descriptor_selected descriptor forloop.parentloop.counter0 forloop.counter%} {% if can_modify_flag is False %} notclickable {% endif %}"
+                                            >
+                                                {{j}}
+                                            </div>
+
+                                            {% if can_modify_flag %}
+                                                <script>
+                                                    var token = '{{csrf_token}}';
+
+                                                    $("#level_{{forloop.parentloop.parentloop.parentloop.counter0}}_{{forloop.parentloop.parentloop.counter0}}_{{forloop.parentloop.counter0}}_{{forloop.counter}}").click(function (event) {
+                                                            $.ajax({
+                                                              type: "POST",
+                                                              headers: { "X-CSRFToken": token },
+                                                              url: "{% url "update_level" %}",
+                                                              dataType: "json",
+                                                              data: {
+                                                                'new_level': {{forloop.counter}},
+                                                                'descriptor': {{descriptor.pk}},
+                                                                'state': {{forloop.parentloop.counter0}},
+                                                              },
+                                                              success: function (data) {
+                                                              console.log(data);
+                                                                var returnedData =data;
+                                                                if (returnedData["success"]) {
+                                                                    $("[id^=level_{{forloop.parentloop.parentloop.parentloop.counter0}}_{{forloop.parentloop.parentloop.counter0}}_{{forloop.parentloop.counter0}}]").removeClass("selected")
+                                                                    $("#level_{{forloop.parentloop.parentloop.parentloop.counter0}}_{{forloop.parentloop.parentloop.counter0}}_{{forloop.parentloop.counter0}}_{{forloop.counter}}").addClass("selected")
+                                                                } else {
+                                                                    alert("there was an error, refresh using Ctrl+F5");
+                                                                }
+                                                              },
+                                                              error: function () {
+                                                                alert("there was an error, refresh using Ctrl+F5")
+                                                              }
+                                                            });
+                                                            return false;
+                                                    });
+
+                                                </script>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+
+                                <br>
+
+                                <textarea
+                                        id="statement_{{forloop.parentloop.parentloop.counter0}}_{{forloop.parentloop.counter0}}_{{forloop.counter0}}"
+                                        class="descriptor_text" {% if can_modify_flag is False %} disabled {% endif %}
+                                >{%if forloop.counter0 is 0 %}{{descriptor.draft_statement}}{%elif forloop.counter0 is 1%}{{descriptor.feedback_statement}}{%else%}{{descriptor.final_statement}}{%endif%}</textarea>
+                                {% if can_modify_flag %}
+                                    <script>
+                                        var token = '{{csrf_token}}';
+                                        $("#statement_{{forloop.parentloop.parentloop.counter0}}_{{forloop.parentloop.counter0}}_{{forloop.counter0}}").keyup(function (event) {
+                                            $.ajax({
+                                              type: "POST",
+                                              headers: { "X-CSRFToken": token },
+                                              url: "{% url "update_statement" %}",
+                                              dataType: "json",
+                                              data: {
+                                                'new_text': $("#statement_{{forloop.parentloop.parentloop.counter0}}_{{forloop.parentloop.counter0}}_{{forloop.counter0}}").val(),
+                                                'descriptor': {{descriptor.pk}},
+                                                'state': {{forloop.counter0}},
+                                              },
+                                              success: function (data) {
+                                              console.log(data);
+                                                var returnedData =data;
+                                                if (returnedData["success"]) {
+                                                    console.log("update successful")
+                                                } else {
+                                                    alert("there was an error, refresh using Ctrl+F5");
+                                                }
+                                              },
+                                              error: function () {
+                                                alert("there was an error, refresh using Ctrl+F5")
+                                              }
+                                            });
+                                            return false;
+                                        });
+
+                                    </script>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    {% endwith %}
+
+                    <hr>
+                {% endfor %}
+
+            </div>
+        {% endfor %}
+
+
+    </div>
+{% endblock %}
