@@ -24,11 +24,16 @@
         </header>
 
         <div id="mySidenav" class="sidenav">
-          <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-          <a href="{% url 'index' %}">Home</a>
-          <a href="{% url 'student_drafts' %}">Drafts</a>
-          <a href="#">Current Records</a>
-          <a href="#">Finished Records</a>
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+            <a href="{% url 'index' %}">Home</a>
+            {% if user.is_authenticated %}
+                {% if request.user|has_group:"student" %}
+                    <a href="{% url 'student_drafts' %}">Drafts</a>
+                    <a href="{% url 'student_records' %}">Records</a>
+                {% elif  request.user|has_group:"teacher"%}
+                        you are a teacher.
+                {% endif %}
+            {% endif %}
           {% if request.user.is_superuser %}
             <a href="{% url 'template_check' %}">Check_template</a>
           {% endif %}

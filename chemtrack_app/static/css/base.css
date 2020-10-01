@@ -40,6 +40,7 @@ body {
 }
 
 div#content {
+    overflow:auto;
     padding:20px;
     max-width:900px;
     margin : auto;
@@ -98,6 +99,8 @@ div#content {
   .sidenav a {font-size: 18px;}
 }
 
+/* Overlay when menu is open */
+
 #overlay {
     width:100%;
     height:100%;
@@ -110,6 +113,8 @@ div#content {
 #overlay:hover{
     cursor:pointer;
 }
+
+/* Outside of content buttons */
 
 .wide_button{
     padding-top: 5px;
@@ -124,6 +129,7 @@ div#content {
 
 .no_style_link {
     text-decoration: none;
+    color:inherit;
 }
 
 .wide_button:hover{
@@ -131,6 +137,8 @@ div#content {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
+
+/* In main area button */
 .in-button {
     padding-left:10px;
     padding-top: 5px;
@@ -140,6 +148,7 @@ div#content {
     color:black;
     text-decoration: none;
     border: 1px rgb(50,80,1) solid;
+    margin-bottom:10px;
 }
 
 .in-button:hover{
@@ -150,4 +159,124 @@ div#content {
 
 .in-button .right_info {
     float:right;
+}
+
+
+/* Draft Page presentation */
+
+#side_menu {
+    float:left;
+    border:1px solid black;
+    margin-right:30px;
+    padding-top:0px;
+    padding-bottom:10px;
+    width:120px;
+}
+
+.cat_menu_element {
+  padding-left:10px;
+  padding-right:10px;
+  font-size: 20px;
+  color: rgb(50,80,1);
+  transition: 0.3s;
+  margin-top:10px;
+}
+
+
+.cat_menu_element:hover {
+  color: rgb(100,160,2);
+  cursor:pointer;
+}
+
+.cat_menu_element.selected {
+    background-color:rgb(200,200,200);
+}
+
+#record_area{
+    margin-left:150px;
+}
+
+/* Descriptor styles */
+
+div.level_button {
+    border: 1px solid black;
+    display:inline-block;
+    text-align: center;
+    margin:0;
+    width:15px;
+}
+div.level_button:hover {
+  cursor:pointer;
+}
+div.level_button.notclickable {
+    border: 1px solid grey;
+    cursor:default;
+    color:grey;
+}
+
+div.level_button.selected {
+    background-color: rgb(100,160,2);
+}
+
+/* Statements */
+textarea.descriptor_text {
+    width:100%;
+}
+
+/* Elements to display the different states */
+.descriptor_display_choice {
+    border: 1px solid black;
+    display:inline-block;
+    text-align: center;
+    margin:0;
+    width:100px;
+}
+div.descriptor_display_choice:hover {
+  cursor:pointer;
+}
+.descriptor_display_choice.selected {
+    background-color: rgb(100,160,2);
+}
+
+.descriptor_container {
+    display:none;
+}
+.descriptor_container.selected {
+    display:block;
+}
+
+/* Each category container */
+.category_container{
+    display:none;
+}
+.category_container.selected {
+    display:block;
+}
+
+/* Tooltip code */
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+
+  width: 300px;
+  background-color: rgb(50,80,1);
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+
+  /* Position the tooltip */
+  position: absolute;
+  top: -5px;
+  left: 105%;
+  z-index: 1;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
 }

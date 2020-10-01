@@ -8,9 +8,15 @@ urlpatterns = [
     path('check_template', views.check_template, name='template_check'),
 
     path('student_drafts/', views.student_dafts_view, name='student_drafts'),
+
+    path('student_records/', views.student_records_view, name='student_records'),
     # Initial page to create a draft
     path('new_draft/', views.create_draft, name='new_draft'),
+    # Main page, modifying drafts
+    path('view_record/<int:record_id>', views.view_record, name='view_record'),
 
-    path('view_record/<int:record_id>', views.view_record, name='view_record')
-    #Page to see current draft
+    # Backend to modify level in DB
+    path('ajax/update_level', views.update_level, name='update_level'),
+
+    path('ajax/update_statement', views.update_statement, name='update_statement')
 ]

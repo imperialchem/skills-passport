@@ -4,10 +4,57 @@
 
         <a href="{% url 'new_draft' %}" class="no_style_link"><div class="wide_button">New Draft</div></a>
 
+    <h2>Final statement</h2>
+
+    {% for record in final_statements %}
+        <a href="{% url 'view_record' record_id=record.pk%}" class="no_style_link">
+            <div class="in-button">
+                <div class="right_info">
+                    <div class="creation_record">Created the: {{record.date_creation}}</div>
+                </div>
+                <div class="name_record">Title: {{record.name}}</div>
+                <div class="date_record">Date: {{record.date}}</div>
+                <div class="description_record">{{record.description|truncatewords:15}}</div>
+                <div class="state_record">{{record.level }}</div>
+            </div>
+        </a>
+    {% endfor %}
 
     <h2>Drafts</h2>
 
-    {% for record in records %}
+    {% for record in drafts %}
+        <a href="{% url 'view_record' record_id=record.pk%}" class="no_style_link">
+            <div class="in-button">
+                <div class="right_info">
+                    <div class="creation_record">Created the: {{record.date_creation}}</div>
+                </div>
+                <div class="name_record">Title: {{record.name}}</div>
+                <div class="date_record">Date: {{record.date}}</div>
+                <div class="description_record">{{record.description|truncatewords:15}}</div>
+                <div class="state_record">{{record.level }}</div>
+            </div>
+        </a>
+    {% endfor %}
+
+    <h2>Waiting for final confirmation</h2>
+
+    {% for record in confirmations %}
+        <a href="{% url 'view_record' record_id=record.pk%}" class="no_style_link">
+            <div class="in-button">
+                <div class="right_info">
+                    <div class="creation_record">Created the: {{record.date_creation}}</div>
+                </div>
+                <div class="name_record">Title: {{record.name}}</div>
+                <div class="date_record">Date: {{record.date}}</div>
+                <div class="description_record">{{record.description|truncatewords:15}}</div>
+                <div class="state_record">{{record.level }}</div>
+            </div>
+        </a>
+    {% endfor %}
+
+    <h2>Waiting for feedback</h2>
+
+    {% for record in feedbacks %}
         <a href="{% url 'view_record' record_id=record.pk%}" class="no_style_link">
             <div class="in-button">
                 <div class="right_info">
