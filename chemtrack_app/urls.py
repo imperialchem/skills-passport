@@ -10,6 +10,8 @@ urlpatterns = [
     path('student_drafts/', views.student_dafts_view, name='student_drafts'),
 
     path('student_records/', views.student_records_view, name='student_records'),
+
+    path('teacher_records/', views.teacher_records_view, name='teacher_records'),
     # Initial page to create a draft
     path('new_draft/', views.create_draft, name='new_draft'),
     # Main page, modifying drafts

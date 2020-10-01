@@ -8,6 +8,7 @@
         Description: {{record.description}} <br>
         Date: {{record.date}} <br>
         Created the: {{record.date_creation}} <br>
+        Student: {{record.student}}, {{record.student.profile.cid}} <br>
         State:
             {% if record.state is 0 %}
                 Draft Stage

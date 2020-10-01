@@ -31,7 +31,7 @@
                     <a href="{% url 'student_drafts' %}">Drafts</a>
                     <a href="{% url 'student_records' %}">Records</a>
                 {% elif  request.user|has_group:"teacher"%}
-                        you are a teacher.
+                    <a href="{% url 'teacher_records' %}">Records</a>
                 {% endif %}
             {% endif %}
           {% if request.user.is_superuser %}

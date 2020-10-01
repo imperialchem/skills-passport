@@ -9,13 +9,13 @@ from .groups import is_teacher, is_student
 #
 #
 
-def create_record(student_cid, name, description, date):
+def create_record(student, name, description, date):
     """
 
     :param student_cid: string : CID of the student
     :return: id of new record
     """
-    new_record = Record(date_creation=timezone.now(), student_cid=student_cid, name=name, description=description, date=date)
+    new_record = Record(date_creation=timezone.now(), student=student, name=name, description=description, date=date)
     new_record.save()
 
 
@@ -39,7 +39,7 @@ def create_record(student_cid, name, description, date):
 def has_acces_to(record, user):
     if is_teacher(user):
         return True
-    elif is_student(user) and record.student_cid == user.profile.cid:
+    elif is_student(user) and record.student == user:
         return True
     else:
         return False
@@ -69,7 +69,7 @@ def can_submit(record, user):
     if record.state == 0 or record.state == 2:
         if is_student(user):
             result = True
-    elif record == 1 or record.state == 3:
+    elif record.state == 1 or record.state == 3:
         if is_teacher(user):
             result = True
     return result

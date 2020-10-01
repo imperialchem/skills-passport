@@ -1,0 +1,37 @@
+{% extends "../../base.html" %}
+
+{% block content %}
+
+    <h2>Waiting for your feedback</h2>
+
+    {% for record in feedback %}
+        <a href="{% url 'view_record' record_id=record.pk%}" class="no_style_link">
+            <div class="in-button">
+                <div class="right_info">
+                    <div class="creation_record">Created the: {{record.date_creation}}</div>
+                </div>
+                <div class="name_record">Title: {{record.name}}</div>
+                <div class="date_record">Date: {{record.date}}</div>
+                <div class="description_record">{{record.description|truncatewords:15}}</div>
+                <div class="state_record">{{record.level }}</div>
+            </div>
+        </a>
+    {% endfor %}
+
+    <h2>Waiting for your confirmation</h2>
+
+    {% for record in confirmations %}
+        <a href="{% url 'view_record' record_id=record.pk%}" class="no_style_link">
+            <div class="in-button">
+                <div class="right_info">
+                    <div class="creation_record">Created the: {{record.date_creation}}</div>
+                </div>
+                <div class="name_record">Title: {{record.name}}</div>
+                <div class="date_record">Date: {{record.date}}</div>
+                <div class="description_record">{{record.description|truncatewords:15}}</div>
+                <div class="state_record">{{record.level }}</div>
+            </div>
+        </a>
+    {% endfor %}
+
+{% endblock %}

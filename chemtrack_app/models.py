@@ -5,8 +5,11 @@ from django.dispatch import receiver
 import datetime
 
 class Assignment(models.Model):
-    student_cid = models.CharField(max_length=15)
-    teacher_cid = models.CharField(max_length=15)
+    student = models.ForeignKey(User, on_delete=models.CASCADE,  related_name='assignment_as_student')
+    teacher = models.ForeignKey(User, on_delete=models.CASCADE, related_name='assignment_as_teacher')
+
+    def __str__(self):
+        return f"Student: {self.student}, Teacher: {self.teacher}"
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -39,10 +42,10 @@ class Descriptor_template(models.Model):
 
 class Record(models.Model):
     date_creation = models.DateTimeField(auto_now_add=True)
-    student_cid = models.CharField(max_length=15)
+    student = models.ForeignKey(User, on_delete=models.CASCADE)
     date = models.DateField(default=datetime.date.today)
     state = models.IntegerField(default=0)
-    levels = models.CharField(max_length=200)
+    levels = models.IntegerField(default=0)
     name = models.CharField(max_length=100, default="")
     description = models.TextField(default="")
 

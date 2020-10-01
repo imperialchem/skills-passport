@@ -4,7 +4,7 @@
 
     <h2>Records</h2>
 
-    {% for record in final_statements %}
+    {% for record in records %}
         <a href="{% url 'view_record' record_id=record.pk%}" class="no_style_link">
             <div class="in-button">
                 <div class="right_info">
