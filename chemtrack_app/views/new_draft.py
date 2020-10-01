@@ -20,11 +20,10 @@ def create_draft(request):
         return render(request, template, context)
     elif request.method == 'POST':
         form = NewDarftForm(request.POST)
-        print(request.POST)
-        print(form.errors)
+
         if form.is_valid():
             new_id = controllers.create_record(request.user.profile.cid, form.cleaned_data["name"], form.cleaned_data["description"], form.cleaned_data["date"])
-            return redirect(f'view_record/{new_id}')
+            return redirect('view_record', record_id=new_id)
 
         else:
             return redirect('new_draft')
